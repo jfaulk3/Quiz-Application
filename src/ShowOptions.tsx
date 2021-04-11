@@ -1,5 +1,6 @@
 import React from "react";
 import { Options } from "./customInterfaces";
+import OptionButton from "./OptionButton";
 
 export interface Props {
   mode: string;
@@ -16,23 +17,17 @@ const ShowOptions: React.FC<Props> = ({
 }) => {
   if (mode !== "options") return null;
   return (
-    <div className="row justify-content-start">
-      <button type="button" className="btn btn-success">
-        <h4>Start Game</h4>
-      </button>
-      <button type="button" className="btn btn-secondary">
-        <h5>Difficulty: {options.difficulty || "Any"} </h5>
-      </button>
-      <button type="button" className="btn btn-secondary">
-        <h5>Number of Questions: {options.numQuestions}</h5>
-      </button>
-      <button type="button" className="btn btn-secondary">
-        <h5>Question Category: {options.category || "Any"}</h5>
-      </button>
-      <button type="button" className="btn btn-secondary">
-        <h5>Question Type: {options.type || "Any"}</h5>
-      </button>
-    </div>
+    <React.Fragment>
+      <div className="row">
+        <button type="button" className="btn btn-block btn-success">
+          <h4>Start Game</h4>
+        </button>
+      </div>
+      <OptionButton name={"Difficulty"} value={options.difficulty} />
+      <OptionButton name={"Number of Questions"} value={options.numQuestions} />
+      <OptionButton name={"Question Category"} value={options.category} />
+      <OptionButton name={"Question Type"} value={options.type} />
+    </React.Fragment>
   );
 };
 

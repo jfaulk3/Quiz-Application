@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import "./App.css";
 import Header from "./Header";
 import ShowOptions from "./ShowOptions";
 import { Question, Result, Options } from "./customInterfaces";
@@ -39,9 +40,15 @@ function App() {
     fetchData();
   }, []);
 
+  const reset = () => {
+    setOptions({ ...initialOptionsState });
+    setMode("options");
+    console.log("Reset Successful");
+  };
+
   return (
     <React.Fragment>
-      <Header />
+      <Header reset={reset} />
       <ShowOptions
         mode={mode}
         setMode={setMode}
