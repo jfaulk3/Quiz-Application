@@ -1,21 +1,22 @@
 import React from "react";
-import { Options } from "./customInterfaces";
 import OptionButton from "./OptionButton";
+import "./requests/getCategories";
 
-export interface Props {
+interface Props {
   mode: string;
-  setMode: (mode: string) => void;
-  options: Options;
-  setOptions: (options: Options) => void;
+  changeMode: (str: string) => void;
+  options: object;
+  changeOption: (key: string, value: number) => void;
 }
 
 const ShowOptions: React.FC<Props> = ({
   mode,
-  setMode,
+  changeMode,
   options,
-  setOptions,
+  changeOption,
 }) => {
   if (mode !== "options") return null;
+  console.log("CURRENT TEST: ", options.numQuestions);
   return (
     <React.Fragment>
       <div className="row">
@@ -23,10 +24,31 @@ const ShowOptions: React.FC<Props> = ({
           <h4>Start Game</h4>
         </button>
       </div>
-      <OptionButton name={"Difficulty"} value={options.difficulty} />
-      <OptionButton name={"Number of Questions"} value={options.numQuestions} />
-      <OptionButton name={"Question Category"} value={options.category} />
-      <OptionButton name={"Question Type"} value={options.type} />
+      <OptionButton
+        name={"Number of Questions"}
+        type={"numQuestions"}
+        choices={[]}
+        value={options}
+        changeOption={changeOption}
+      />
+      <OptionButton
+        name={"Select Category: "}
+        type={"numCategory"}
+        choices={[]}
+        value={options[category].key}
+        changeOption={changeOption}
+      />
+      {/* <OptionButton
+        name={"Difficulty"}
+        type={"difficulty"}
+        value={options.difficulty}
+      />
+      <OptionButton
+        name={"Question Category"}
+        type={"category"}
+        value={options.category}
+      />
+      <OptionButton name={"Question Type"} type={"type"} value={options.type} /> */}
     </React.Fragment>
   );
 };

@@ -1,59 +1,67 @@
 import React from "react";
-import axios from "axios";
 import "./App.css";
 import Header from "./Header";
 import ShowOptions from "./ShowOptions";
-import { Question, Result, Options } from "./customInterfaces";
+import getCategories from "./requests/getCategories";
 
-const initialOptionsState: Options = {
+const initialOptionsState: object = {
   numQuestions: 10,
-  category: "",
-  difficulty: "",
-  type: "",
+  category: 0,
+  numDifficulty: 0,
+  numType: 0,
 };
 
-const arrayQuestions: Question[] = []; //default questions | empty for now
-const url: string = "https://opentdb.com/api.php?";
+const url: string = "https://opentdb.com/";
 
 function App() {
   const [mode, setMode]: [string, (mode: string) => void] = React.useState(
     "options"
   );
-  const [options, setOptions]: [
-    Options,
-    (options: Options) => void
-  ] = React.useState({ ...initialOptionsState });
+  const [options, setOptions] = React.useState({ ...initialOptionsState });
+
+  const changeMode = (str: string) => setMode(str);
+
+  const changeOption = (key: string, value: number) => {
+    if (key === "numQuestions") {
+      value = Math.min(Math.max(value, 1), 50);
+      setOptions({
+        ...options,
+        [key]: value,
+      });
+    }
+  };
+
+  const [categories, setCategories]: [
+    Array<string>,
+    (categories: Array<string>) => void
+  ] = React.useState([""]);
 
   React.useEffect(() => {
     //TODO: get questions
     const fetchData = async () => {
-      const result: Result = await axios.get(`${url}amount=10`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const {
-        data: { results },
-      } = result;
-      console.log(results);
+      const response = await fetch(`${url}api_category.php`);
+      const data = await response.json();
+      const { trivia_categories } = data;
+      setCategories(getCategories(trivia_categories));
     };
     fetchData();
   }, []);
+
+  console.log(categories);
 
   const reset = () => {
     setOptions({ ...initialOptionsState });
     setMode("options");
     console.log("Reset Successful");
   };
-
   return (
     <React.Fragment>
       <Header reset={reset} />
       <ShowOptions
         mode={mode}
-        setMode={setMode}
+        changeMode={changeMode}
         options={options}
-        setOptions={setOptions}
+        changeOption={changeOption}
       />
     </React.Fragment>
   );
