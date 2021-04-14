@@ -1,4 +1,3 @@
-import React from "react";
 import "./Header.css";
 
 interface Props {
@@ -8,7 +7,7 @@ interface Props {
 const Header: React.FC<Props> = ({ reset }) => {
   return (
     <header className="row">
-      <h1 className="text-center">My Quiz App</h1>
+      <h1 className="text-center p-3 m-0">My Quiz App</h1>
       <button type="button" className="btn btn-light" onClick={reset}>
         Home
       </button>

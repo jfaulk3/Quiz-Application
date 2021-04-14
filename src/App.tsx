@@ -1,68 +1,45 @@
-import React from "react";
-import "./App.css";
-import Header from "./Header";
-import ShowOptions from "./ShowOptions";
-import getCategories from "./requests/getCategories";
+import React, { useState } from "react";
+import Header from "./components/Header";
+import OptionButton from "./components/OptionButton";
+import { fetchCategories } from "./requests/util";
 
-const initialOptionsState: object = {
-  numQuestions: 10,
-  category: 0,
-  numDifficulty: 0,
-  numType: 0,
-};
+const initialState: Options = { numQuestions: 10, allCategories: {} };
 
-const url: string = "https://opentdb.com/";
+interface Options {
+  numQuestions: number;
+  allCategories: object;
+}
 
 function App() {
-  const [mode, setMode]: [string, (mode: string) => void] = React.useState(
-    "options"
-  );
-  const [options, setOptions] = React.useState({ ...initialOptionsState });
+  const [gameStart, setGameStart] = useState(true);
+  const [allOptions, setAllOptions]: [
+    Options,
+    (allOptions: Options) => void
+  ] = useState(initialState);
 
-  const changeMode = (str: string) => setMode(str);
-
-  const changeOption = (key: string, value: number) => {
-    if (key === "numQuestions") {
-      value = Math.min(Math.max(value, 1), 50);
-      setOptions({
-        ...options,
-        [key]: value,
-      });
-    }
+  const changeAllOptions = (key: string, value: Object) => {
+    setAllOptions({
+      ...allOptions,
+      [key]: value,
+    });
   };
 
-  const [categories, setCategories]: [
-    Array<string>,
-    (categories: Array<string>) => void
-  ] = React.useState([""]);
+  const reset = () => {
+    setGameStart(false);
+    console.log("App-file: Home button pressed : Restart Beginning");
+  };
 
   React.useEffect(() => {
     //TODO: get questions
-    const fetchData = async () => {
-      const response = await fetch(`${url}api_category.php`);
-      const data = await response.json();
-      const { trivia_categories } = data;
-      setCategories(getCategories(trivia_categories));
-    };
-    fetchData();
+    fetchCategories(changeAllOptions);
   }, []);
 
-  console.log(categories);
+  console.log(allOptions);
 
-  const reset = () => {
-    setOptions({ ...initialOptionsState });
-    setMode("options");
-    console.log("Reset Successful");
-  };
   return (
     <React.Fragment>
       <Header reset={reset} />
-      <ShowOptions
-        mode={mode}
-        changeMode={changeMode}
-        options={options}
-        changeOption={changeOption}
-      />
+      <OptionButton gameStart={gameStart} />
     </React.Fragment>
   );
 }

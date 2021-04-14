@@ -1,19 +1,4 @@
-import React from "react";
-interface Props {
-  name: string;
-  type: string;
-  choices: string[];
-  value: number;
-  changeOption: (key: string, value: number) => void;
-}
-
-const OptionButton: React.FC<Props> = ({
-  name,
-  type,
-  choices,
-  value,
-  changeOption,
-}) => {
+const OptionButton = ({ gameStart }) => {
   return (
     <div className="row bg-secondary text-white text-left">
       <button
@@ -39,6 +24,7 @@ const OptionButton: React.FC<Props> = ({
       </button>
     </div>
   );
+  return null;
 };
 
 export default OptionButton;
