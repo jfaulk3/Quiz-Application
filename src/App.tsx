@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import Header from "./components/Header";
+import GameScreen from "./components/GameScreen";
 import OptionButton from "./components/OptionButton";
+import StartButton from "./components/OptionButton/StartButton";
 
 const initialOptionValue = {
-  numQuestions: 0,
+  numQuestions: 1,
   numCategories: 0,
   numDifficulty: 0,
   numTypes: 0,
@@ -29,6 +31,8 @@ function App() {
   const [optionVal, setOptionVal]: [any, (optionVal: any) => void] = useState({
     ...initialOptionValue,
   });
+
+  const [triviaCategories, setTriviaCategories] = useState([]);
 
   const changeOptionVal = (key: string, value: number) => {
     setOptionVal({
@@ -66,10 +70,17 @@ function App() {
           ({ name }: { name: string }) => name
         );
         changeOptionArray("categories", ["", ...array]);
+        setTriviaCategories(trivia_categories);
       }
     );
+    console.log("Categories API CALL");
     return () => abortController.abort();
   }, []);
+
+  const beginGame = () => {
+    setIsGameStart(true);
+    console.log("App-file: Start button pressed : Quiz Beginning");
+  };
 
   const reset = () => {
     setIsGameStart(false);
@@ -81,7 +92,7 @@ function App() {
       <Header reset={reset} />
       <OptionButton
         isGameStart={isGameStart}
-        name={"Number of Questions: "}
+        name={"Number of Questions"}
         type={"numQuestions"}
         options={optionVal.numQuestions}
         value={optionVal.numQuestions}
@@ -91,7 +102,7 @@ function App() {
       />
       <OptionButton
         isGameStart={isGameStart}
-        name={"Select a Category: "}
+        name={"Select a Category"}
         type={"numCategories"}
         options={allOptions.categories}
         value={optionVal.numCategories}
@@ -101,7 +112,7 @@ function App() {
       />
       <OptionButton
         isGameStart={isGameStart}
-        name={"Select a Difficult: "}
+        name={"Select a Difficult"}
         type={"numDifficulty"}
         options={allOptions.difficulty}
         value={optionVal.numDifficulty}
@@ -111,13 +122,20 @@ function App() {
       />
       <OptionButton
         isGameStart={isGameStart}
-        name={"Select Question Type: "}
+        name={"Select Question Type"}
         type={"numTypes"}
         options={allOptions.types}
         value={optionVal.numTypes}
         changeOptionVal={changeOptionVal}
         minValueAllowed={0}
         maxValueAllowed={allOptions.types.length - 1}
+      />
+      <StartButton isGameStart={isGameStart} beginGame={beginGame} />
+      <GameScreen
+        triviaCategories={triviaCategories}
+        isGameStart={isGameStart}
+        optionVal={optionVal}
+        allOptions={allOptions}
       />
     </React.Fragment>
   );
