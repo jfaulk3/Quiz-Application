@@ -41,13 +41,6 @@ function App() {
     });
   };
 
-  const changeOptionArray = (key: string, value: Array<string>) => {
-    setAllOptions({
-      ...allOptions,
-      [key]: value,
-    });
-  };
-
   React.useEffect(() => {
     const abortController = new AbortController();
     const fetchData = async (url: string) => {
@@ -69,7 +62,11 @@ function App() {
         const array: Array<string> = trivia_categories.map(
           ({ name }: { name: string }) => name
         );
-        changeOptionArray("categories", ["", ...array]);
+        setAllOptions({
+          categories: ["", ...array],
+          difficulty: ["", "Easy", "Medium", "Hard"],
+          types: ["", "Multiple Choice", "True/False"],
+        });
         setTriviaCategories(trivia_categories);
       }
     );
