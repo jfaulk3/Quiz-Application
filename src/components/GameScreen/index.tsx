@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Display from "./Display";
 import { generateUrl } from "./../../helper/util";
 
 interface Props {
@@ -19,6 +20,12 @@ const GameScreen: React.FC<Props> = ({
   const [questions, setQuestions]: [any, (questions: any) => void] = useState(
     []
   );
+
+  const [roundNumber, setRoundNumber]: [
+    number,
+    (roundNumber: number) => void
+  ] = useState(0);
+
   useEffect(() => {
     if (url) {
       const abortController = new AbortController();
@@ -45,7 +52,7 @@ const GameScreen: React.FC<Props> = ({
   console.log(questions);
 
   if (!isGameStart) return null;
-  return <h1>Game Field</h1>;
+  return <Display questions={questions} />;
 };
 
 export default GameScreen;
