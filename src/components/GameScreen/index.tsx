@@ -7,12 +7,14 @@ interface Props {
   isGameStart: boolean;
   optionVal: any;
   allOptions: any;
+  reset: () => void;
 }
 const GameScreen: React.FC<Props> = ({
   triviaCategories,
   isGameStart,
   optionVal,
   allOptions,
+  reset,
 }) => {
   const url: any = isGameStart
     ? generateUrl(triviaCategories, optionVal, allOptions)
@@ -26,14 +28,23 @@ const GameScreen: React.FC<Props> = ({
     (roundNumber: number) => void
   ] = useState(0);
 
+  const nextQuestion = () => {
+    if (roundNumber === optionVal.numQuestions) {
+      console.log("GAME FINISHED");
+      reset();
+    }
+    setRoundNumber(roundNumber + 1);
+  };
+
   useEffect(() => {
     if (url) {
       const abortController = new AbortController();
       const fetchData = async () => {
         try {
           const response = await fetch(url, { signal: abortController.signal });
-          const data = response.json();
-          return data;
+          const data = await response.json();
+          const { results } = data;
+          setQuestions(results);
         } catch (error) {
           if (error.name === "AbortError") {
             console.log("Aborted");
@@ -42,17 +53,18 @@ const GameScreen: React.FC<Props> = ({
           }
         }
       };
-      fetchData().then((data) => {
-        setQuestions(data);
-      });
+      fetchData();
       console.log("Questions API CALL");
       return () => abortController.abort();
     }
   }, [url]);
-  console.log(questions);
-
-  if (!isGameStart) return null;
-  return <Display questions={questions} />;
+  if (!isGameStart || !questions) return null;
+  return (
+    <Display
+      showQuestion={questions[roundNumber]}
+      nextQuestion={nextQuestion}
+    />
+  );
 };
 
 export default GameScreen;

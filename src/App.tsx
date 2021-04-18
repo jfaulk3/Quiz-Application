@@ -133,6 +133,7 @@ function App() {
         isGameStart={isGameStart}
         optionVal={optionVal}
         allOptions={allOptions}
+        reset={reset}
       />
     </React.Fragment>
   );
