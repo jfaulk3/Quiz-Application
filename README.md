@@ -7,4 +7,4 @@ handle the style of the application.
 Users are presented with a page to pick their quiz settings. Upon starting the game, they will receive questions
 based on the settings they chose when the application started.
 
-Link to application: [https://quiz-app-pwer7ws16-jfaulk3.vercel.app/]
+Link to application: [https://quiz-app-klzd0t3m3-jfaulk3.vercel.app/]
