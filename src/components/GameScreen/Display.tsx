@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { shuffle } from "../../helper/util";
+import React, { useState, useEffect } from "react";
+import { shuffle, decodeString } from "../../helper/util";
 import Next from "./Next";
+import "./style.css";
 
 interface Props {
   showQuestion: any;
@@ -11,44 +12,49 @@ const Display: React.FC<Props> = ({ showQuestion, nextQuestion }) => {
     boolean,
     (readyForNext: boolean) => void
   ] = useState<boolean>(false);
-  if (!showQuestion) return null;
-  const {
-    category,
-    question,
-    difficulty,
-    correct_answer,
-    incorrect_answers,
-  } = showQuestion;
 
-  const answers = shuffle([correct_answer, ...incorrect_answers]);
+  const [answers, setAnswers] = useState([""]);
+  useEffect(() => {
+    if (showQuestion) {
+      setAnswers(
+        shuffle([
+          showQuestion.correct_answer,
+          ...showQuestion.incorrect_answers,
+        ])
+      );
+    }
+  }, [showQuestion]);
+
   const checkAnswer = ({ target }: any) => {
     if (target.value === correct_answer) {
-      target.className += " text-success";
+      target.className = "col-4 m-4  text-success";
       setReadyForNext(true);
     } else {
-      target.className += " text-danger";
+      target.className = "col-4 m-4  text-danger";
       setReadyForNext(true);
     }
   };
 
+  if (!showQuestion) return null;
+  const { category, question, difficulty, correct_answer } = showQuestion;
   return (
     <React.Fragment>
       <div className="row">
         <h5 className="text-center">
           [Category: {category} | Difficulty: {difficulty}]
         </h5>
-        <h3 className="text-center">{question}</h3>
+        <h3 className="text-center">{decodeString(question)}</h3>
       </div>
       <div className="row text-center justify-content-center">
-        {answers.map((answer, index) => (
+        {answers.map((answer) => (
           <button
-            key={index}
+            key={answer}
             value={answer}
             type="button"
             onClick={checkAnswer}
-            className="col-4 m-4"
+            className={`col-4 m-4`}
           >
-            {answer}
+            {decodeString(answer)}
           </button>
         ))}
       </div>

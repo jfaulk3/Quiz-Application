@@ -81,6 +81,7 @@ function App() {
 
   const reset = () => {
     setIsGameStart(false);
+    window.location.reload(false);
     console.log("App-file: Home button pressed : Restart Beginning");
   };
 

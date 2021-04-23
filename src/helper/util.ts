@@ -55,13 +55,7 @@ export const shuffle = (array: Array<any>) => {
 };
 
 export const decodeString = (str: string) => {
-  //function taken from: https://www.codegrepper.com/code-examples/javascript/how+to+decode+html+entities+in+javascript
-  const htmlEntities: any = {
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&apos;",
-  };
-  return str.replace(/([&<>"'])/g, (match) => htmlEntities[match]);
+  const txt = document.createElement("textarea");
+  txt.innerHTML = str;
+  return txt.value;
 };

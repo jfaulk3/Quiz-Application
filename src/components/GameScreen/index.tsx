@@ -23,17 +23,16 @@ const GameScreen: React.FC<Props> = ({
     []
   );
 
-  const [roundNumber, setRoundNumber]: [
-    number,
-    (roundNumber: number) => void
-  ] = useState(0);
+  const [roundNumber, setRoundNumber] = useState(0);
 
   const nextQuestion = () => {
-    if (roundNumber === optionVal.numQuestions) {
+    if (roundNumber + 1 === optionVal.numQuestions) {
       console.log("GAME FINISHED");
+      alert("No more questions. Thank you for playing!");
       reset();
+    } else {
+      setRoundNumber(roundNumber + 1);
     }
-    setRoundNumber(roundNumber + 1);
   };
 
   useEffect(() => {
