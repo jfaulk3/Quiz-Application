@@ -7,4 +7,7 @@ handle the style of the application.
 Users are presented with a page to pick their quiz settings. Upon starting the game, they will receive questions
 based on the settings they chose when the application started.
 
+### Future Goals: 
+Replace the arrow buttons with a drop down menu. Customize to CSS to be desktop friendly.
+
 Link to application: [https://quiz-app-klzd0t3m3-jfaulk3.vercel.app/]
